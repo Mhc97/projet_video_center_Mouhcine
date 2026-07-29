@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une vidéo{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h1 class="mb-4">📹 Créer une vidéo</h1>
+
+        {{ form_start(form) }}
+            <div class="mb-3">
+                {{ form_label(form.title) }}
+                {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.title) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.videoLink) }}
+                {{ form_widget(form.videoLink, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.videoLink) }}
+                <small class="text-muted">Exemple: https://www.youtube.com/watch?v=lcZDWo6hiuI</small>
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+                {{ form_errors(form.description) }}
+            </div>
+
+            <div class="mb-3 form-check">
+                {{ form_widget(form.premiumVideo, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_label(form.premiumVideo) }}
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Créer</button>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}
