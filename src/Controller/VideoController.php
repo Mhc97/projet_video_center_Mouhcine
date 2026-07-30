@@ -41,4 +41,12 @@ class VideoController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+   #[Route('/video/{id}', name: 'app_video_show')]
+public function show(Video $video): Response
+{
+    return $this->render('video/show.html.twig', [
+        'video' => $video,
+    ]);
+}
 }
