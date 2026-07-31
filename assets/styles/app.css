@@ -1,6 +1,7 @@
 /* On supprime @import 'bootstrap/dist/css/bootstrap.min.css'; */
 /* On le remplace par : */
-@import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+/* @import '../../node_modules/bootstrap/dist/css/bootstrap.min.css'; */
+
 
 body {
     background-color: skyblue;
