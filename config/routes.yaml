@@ -9,3 +9,9 @@
 
 controllers:
     resource: routing.controllers
+
+    app_home:
+        path: /{_locale}/
+        controller: App\Controller\VideoController::index
+        requirements:
+            _locale: fr|en

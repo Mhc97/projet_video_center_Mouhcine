@@ -1,0 +1,4 @@
+symfonycasts_verify_email:
+    lifetime: 18000
+
+    

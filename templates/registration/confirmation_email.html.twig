@@ -1,0 +1,6 @@
+<h1>Bonjour {{ user.firstname}}</h1>
+<p>Merci de vous être inscrit sur Video Center.</p>
+<p><a href="{{ signedUrl|raw }}">Confirmer mon email</a></p>
+<p>Ce lien expire dans 
+{{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+</p>

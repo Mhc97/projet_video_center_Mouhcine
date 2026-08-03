@@ -7,6 +7,7 @@
 
 <div class="row">
     {% for video in videos %}
+        {% if not video.premiumVideo or (app.user and app.user.isVerified)%}
         <div class="col-md-4 mb-4">
             <div class="card">
                 <div class="card-body">
@@ -33,6 +34,7 @@
         <div class="col-12">
             <p>Aucune vidéo disponible.</p>
         </div>
+        {% endif %}
     {% endfor %}
 </div>
 {% endblock %}

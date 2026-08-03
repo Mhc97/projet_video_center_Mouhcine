@@ -29,6 +29,9 @@
                                 <a class="nav-link" href="{{ path('app_video_create') }}">Ajouter une vidéo</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_profile') }}">Mon profil</a>  {# À ajouter plus tard #}
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
                             </li>
                         {% else %}
@@ -36,8 +39,7 @@
                                 <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
                             </li>
                             <li class="nav-item">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Inscription (bientôt)</a>
+                                <a class="nav-link" href="{{ path('app_register') }}">Inscription</a>  {# ✅ CORRIGÉ #}
                             </li>
                         {% endif %}
                     </ul>

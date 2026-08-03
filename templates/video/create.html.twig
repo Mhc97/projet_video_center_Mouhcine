@@ -1,39 +1,73 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer une vidéo{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <h1 class="mb-4">📹 Créer une vidéo</h1>
+        <h1 class="mb-4 text-center">🔐 Connexion</h1>
 
-        {{ form_start(form) }}
+        {% if error %}
+            <div class="alert alert-danger">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        <form method="post" class="mt-4">
+            {% if app.user %}
+                <div class="alert alert-info">
+                    Vous êtes déjà connecté en tant que <strong>{{ app.user.userIdentifier }}</strong>.
+                    <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                </div>
+            {% endif %}
+
             <div class="mb-3">
-                {{ form_label(form.title) }}
-                {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.title) }}
+                <label for="username" class="form-label">Email</label>
+                <input 
+                    type="email" 
+                    value="{{ last_username }}" 
+                    name="_username" 
+                    id="username" 
+                    class="form-control" 
+                    autocomplete="email" 
+                    required 
+                    autofocus
+                    placeholder="exemple@email.com"
+                >
             </div>
 
             <div class="mb-3">
-                {{ form_label(form.videoLink) }}
-                {{ form_widget(form.videoLink, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.videoLink) }}
-                <small class="text-muted">Exemple: https://www.youtube.com/watch?v=lcZDWo6hiuI</small>
+                <label for="password" class="form-label">Mot de passe</label>
+                <input 
+                    type="password" 
+                    name="_password" 
+                    id="password" 
+                    class="form-control" 
+                    autocomplete="current-password" 
+                    required
+                    placeholder="••••••••"
+                >
             </div>
 
-            <div class="mb-3">
-                {{ form_label(form.description) }}
-                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 5}}) }}
-                {{ form_errors(form.description) }}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button class="btn btn-primary w-100" type="submit">
+                Se connecter
+            </button>
+
+            <div class="text-center mt-3">
+                <a href="#">Mot de passe oublié ?</a>
             </div>
 
-            <div class="mb-3 form-check">
-                {{ form_widget(form.premiumVideo, {'attr': {'class': 'form-check-input'}}) }}
-                {{ form_label(form.premiumVideo) }}
-            </div>
+            <hr>
 
-            <button type="submit" class="btn btn-success w-100">Créer</button>
-        {{ form_end(form) }}
+            <div class="text-center">
+                <p class="mb-0">Pas encore de compte ?</p>
+                <a href="{{ path('app_register') }}" class="btn btn-outline-success w-100 mt-2">
+                    S'inscrire
+                </a>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}
