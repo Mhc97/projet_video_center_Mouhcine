@@ -8,6 +8,13 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
+<form method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="search" class="form-control" placholder="Recherche..." value="{{ search }}">
+        <button class="btn btn-primary" type="submit">🔍</button>
+    </div>
+</form>
+
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
 
@@ -16,5 +23,8 @@
         <li>Your controller at <code>C:/cfitech/projet_video_center_Mouhcine/src/Controller/AccountController.php</code></li>
         <li>Your template at <code>C:/cfitech/projet_video_center_Mouhcine/templates/account/index.html.twig</code></li>
     </ul>
+</div>
+<div class="navigation">
+    {{ knp_pagination_render(videos) }}
 </div>
 {% endblock %}

@@ -12,38 +12,52 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+        {# titre principale #}
+        <h1>{{ 'accueil'|trans }}</h1>
         <!-- NAVBAR -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="{{ path('app_home') }}">🎬 Video Center</a>
+                <a class="navbar-brand" href="{{ path('app_home') }}">🎬 {{ 'Acceuil'|trans}}</a>
+                
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_home') }}">Accueil</a>
+                            <a class="nav-link" href="{{ path('app_home') }}">{{ 'Acceuil'|trans}}</a>
                         </li>
                         {% if app.user %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_video_create') }}">Ajouter une vidéo</a>
+                                <a class="nav-link" href="{{ path('app_video_create') }}">{{ 'Ajouter une video'|trans}}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_profile') }}">Mon profil</a>  {# À ajouter plus tard #}
+                                <a class="nav-link" href="{{ path('app_profile') }}">{{ 'Mon profil'|trans}}</a>  {# À ajouter plus tard #}
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+                                <a class="nav-link" href="{{ path('app_logout') }}">{{ 'Déconnexion'|trans}}</a>
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                                <a class="nav-link" href="{{ path('app_login') }}">{{ 'Connexion'|trans}}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_register') }}">Inscription</a>  {# ✅ CORRIGÉ #}
+                                <a class="nav-link" href="{{ path('app_register') }}">{{ 'Inscription'|trans}}</a>  {# ✅ CORRIGÉ #}
                             </li>
                         {% endif %}
                     </ul>
                 </div>
+            </div>
+            <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                {{app.request.locale == 'fr' ? '🇫🇷 Français': '🇬🇧 English'}}
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ path(app.request.attributes.get('_route'), 
+                app.request.attributes.get(_route_params)|merge({'_locale':'fr'})) }}">🇫🇷 Français</a></li>
+                <li><a class="dropdown-item" href="{{ path(app.request.attributes.get('_route'),
+                app.request.get('_route_params')|merge({'_locale':'en'})) }}">🇬🇧 English</a></li>
+            </ul>
             </div>
         </nav>
 

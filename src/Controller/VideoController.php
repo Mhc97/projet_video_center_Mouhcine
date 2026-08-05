@@ -10,14 +10,31 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 class VideoController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(VideoRepository $videoRepository): Response
+    public function index(VideoRepository $videoRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $videos = $pageinator->paginate(
+            $videoRepository->findAll(),
+            $request->query->getInt('page', 1),
+            6
+        );
+        $search = $request->query->get('search');
+
+        if ($search){
+            $videos = $videoRepository->search($search);
+            
+        }else {
+            $videos = $videoRepository->findAll();
+        }
         return $this->render('video/index.html.twig', [
-            'videos' => $videoRepository->findAll(),
+            // 'videos' => $videoRepository->findAll(),
+            'videos' => $videos,
+            'search' => $search,
         ]);
     }
 
