@@ -8,6 +8,7 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
+<<<<<<< HEAD
 <div class="row justify-content-center">
     <div class="col-md-6">
         <h1 class="mb-4 text-center">Mon profil</h1>
@@ -18,5 +19,25 @@
             <li class="list-group-item"><strong>Compte créé le :</strong> {{ user.createdAt|date('d/m/Y H:i') }}</li>
         </ul>
     </div>
+=======
+<form method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="search" class="form-control" placholder="Recherche..." value="{{ search }}">
+        <button class="btn btn-primary" type="submit">🔍</button>
+    </div>
+</form>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code>C:/cfitech/projet_video_center_Mouhcine/src/Controller/AccountController.php</code></li>
+        <li>Your template at <code>C:/cfitech/projet_video_center_Mouhcine/templates/account/index.html.twig</code></li>
+    </ul>
+>>>>>>> d50f532ab68544ec6c44f4a594fd113e818452b1
+</div>
+<div class="navigation">
+    {{ knp_pagination_render(videos) }}
 </div>
 {% endblock %}

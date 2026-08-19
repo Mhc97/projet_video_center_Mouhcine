@@ -4,18 +4,22 @@ namespace App\Repository;
 
 use App\Entity\Video;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+<<<<<<< HEAD
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+=======
+// use Doctrine\Persistence\ManagerRegistry;
+>>>>>>> d50f532ab68544ec6c44f4a594fd113e818452b1
 
 /**
  * @extends ServiceEntityRepository<Video>
  */
 class VideoRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Video::class);
-    }
+    // public function __construct(ManagerRegistry $registry)
+    // {
+    //     parent::__construct($registry, Video::class);
+    // }
 
     public function findBySearchAndVisibility(?string $search, bool $showPremium): Query
     {
@@ -52,6 +56,17 @@ class VideoRepository extends ServiceEntityRepository
     //        ;
     //    }
 
+    public function search($searchTerm): array
+    {
+         return $this->createQueryBuilder('v')
+               ->where('v.title LIKE :search')
+               ->orWhere('v.description LIKE :search')
+               ->setParameter('search', '%' . $searchTerm . '%')
+               ->getQuery()
+               ->getResult()
+           ;
+    }
+
     //    public function findOneBySomeField($value): ?Video
     //    {
     //        return $this->createQueryBuilder('v')
@@ -61,4 +76,6 @@ class VideoRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+
 }
