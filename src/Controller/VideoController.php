@@ -10,14 +10,29 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use knp\component\Pager\PaginatorInterface;
+use PHPUnit\Metadata\Api\Requirements;
+use Knp\Bundle\PaginatorBundle\Definition\AbstractPaginatorAware;
 
 class VideoController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(VideoRepository $videoRepository): Response
+    public function index(VideoRepository $videoRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $search = $request->query->get('search', '');
+        $showPremium = $this->getUser() && $this->getUser()->isVerified();
+
+        $query = $videoRepository->findBySearchAndVisibility($search, $showPremium);
+
+        $videos = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            6
+        );
+
         return $this->render('video/index.html.twig', [
-            'videos' => $videoRepository->findAll(),
+            'videos' => $videos,
+            'searchTerm' => $search,
         ]);
     }
 
@@ -35,7 +50,6 @@ class VideoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $video->setUser($this->getUser());
             $entityManager->persist($video);
             $entityManager->flush();
@@ -49,11 +63,26 @@ class VideoController extends AbstractController
         ]);
     }
 
-   #[Route('/video/{id}', name: 'app_video_show')]
+   #[Route('/video/{id}', name: 'app_video_show' Requirements: ['id' => '\d+'])]
     public function show(Video $video): Response
 {
+    $videoLink = $video->getVideoLink();
+    parse_str(parse_url($videoLink, PHP_URL_QUERY), $queryParams);
+    $videoId = $queryParams['v'] ?? '';
+    if ($video->isPremiumVideo()){
+        if (!$this->getUser()){
+            $this->addFlash('danger', 'Vous devez vous connecter pour voir une vidéo Premium !');
+            return $this->redirectToRoute('app_login');
+        }  
+             if (!$this->getUser()->isVerified()){
+            $this->addFlash('danger', 'Vous devez confirmer votre email pour voir une vidéo Premium !');
+            return $this->redirectToRoute('app_home');
+        }
+ 
+    }
     return $this->render('video/show.html.twig', [
         'video' => $video,
+        'cideoId' => $videoId,
     ]);
 }
 
@@ -64,6 +93,11 @@ public function edit(Request $request, Video $video, EntityManagerInterface $em)
         $this->addFlash('danger', 'Vous devez être connecté pour modifier une vidéo.');
         return $this->redirectToRoute('app_login');
     }
+
+    // if (!$this->getUser()->isVerified()){
+    //     $this->addFlash('danger', 'Vous devez confirmer votre email pour modifier une vidéo.');
+    //     return $this->redirectToRoute('app_home');
+    // }
 
 
     // vérifier si l'utilsateur est bien le propriétaire de la vidéo

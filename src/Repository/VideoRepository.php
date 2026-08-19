@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Video;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,6 +15,26 @@ class VideoRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Video::class);
+    }
+
+    public function findBySearchAndVisibility(?string $search, bool $showPremium): Query
+    {
+        $qb = $this->createQueryBuilder('v');
+
+        // Recherche par titre ou description
+        if ($search){
+            $qb->andWhere('v.title LIKE :search OR v.description LIKE :search')
+             ->setParameter('search', '%' . $search . '%');
+        }
+
+        // Filtrer les vidéos premium
+        if (!$showPremium){
+            $qb->andWhere('v.premiumVideo = false');
+        }
+
+        $qb->orderBy('v.createdAt', 'DESC');
+
+        return $qb->getQuery();
     }
 
     //    /**

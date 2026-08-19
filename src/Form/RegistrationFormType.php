@@ -2,6 +2,9 @@
 
 namespace App\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Email;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -43,6 +46,31 @@ class RegistrationFormType extends AbstractType
                     ),
                 ],
             ])
+            ->add('firstname', TextType::class, [
+             'label' => 'Prénom',
+             'attr' => ['class' => 'form-control'],
+             'constraints' => [
+                new NotBlank(message: 'Le prénom ne peut pas être vide.'),
+                new Length(min: 2, minMessage: 'Le prénom doit contenir au moins {{ limit }} caractères.'),
+    ],
+             ])
+    ->add('lastname', TextType::class, [
+        'label' => 'Nom',
+        'attr' => ['class' => 'form-control'],
+        'constraints' => [
+            new NotBlank(message: 'Le nom ne peut pas être vide.'),
+            new Length(min: 2, minMessage: 'Le nom doit contenir au moins {{ limit }} caractères.'),
+    ],
+    ])
+    ->add('email', EmailType::class, [
+        'label' => 'Email',
+        'attr' => ['class' => 'form-control'],
+        'constraints' => [
+            new NotBlank(message: 'L\'email ne peut pas être vide'),
+            new Length(min: 5, minMessage: 'L\'email doit contenir au moins {{ limit }} caractères.'),
+            new Email(message: 'Veuillez entrer une adresse email valide.'),
+        ]
+    ])
         ;
     }
 
