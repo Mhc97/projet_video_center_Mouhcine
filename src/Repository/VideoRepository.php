@@ -4,35 +4,34 @@ namespace App\Repository;
 
 use App\Entity\Video;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-<<<<<<< HEAD
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-=======
-// use Doctrine\Persistence\ManagerRegistry;
->>>>>>> d50f532ab68544ec6c44f4a594fd113e818452b1
 
 /**
  * @extends ServiceEntityRepository<Video>
  */
 class VideoRepository extends ServiceEntityRepository
 {
-    // public function __construct(ManagerRegistry $registry)
-    // {
-    //     parent::__construct($registry, Video::class);
-    // }
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Video::class);
+    }
 
+    /**
+     * Recherche les vidéos en fonction d'un terme de recherche et de la visibilité premium
+     */
     public function findBySearchAndVisibility(?string $search, bool $showPremium): Query
     {
         $qb = $this->createQueryBuilder('v');
 
         // Recherche par titre ou description
-        if ($search){
+        if ($search && !empty($search)) {
             $qb->andWhere('v.title LIKE :search OR v.description LIKE :search')
-             ->setParameter('search', '%' . $search . '%');
+               ->setParameter('search', '%' . $search . '%');
         }
 
-        // Filtrer les vidéos premium
-        if (!$showPremium){
+        // Filtrer les vidéos premium (si l'utilisateur n'est pas vérifié)
+        if (!$showPremium) {
             $qb->andWhere('v.premiumVideo = false');
         }
 
@@ -41,41 +40,21 @@ class VideoRepository extends ServiceEntityRepository
         return $qb->getQuery();
     }
 
-    //    /**
-    //     * @return Video[] Returns an array of Video objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('v.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    public function search($searchTerm): array
+    /**
+     * Recherche simple pour la pagination
+     */
+    public function search(?string $searchTerm): array
     {
-         return $this->createQueryBuilder('v')
-               ->where('v.title LIKE :search')
+        $qb = $this->createQueryBuilder('v');
+        
+        if ($searchTerm && !empty($searchTerm)) {
+            $qb->where('v.title LIKE :search')
                ->orWhere('v.description LIKE :search')
-               ->setParameter('search', '%' . $searchTerm . '%')
-               ->getQuery()
-               ->getResult()
-           ;
+               ->setParameter('search', '%' . $searchTerm . '%');
+        }
+        
+        return $qb->orderBy('v.createdAt', 'DESC')
+                  ->getQuery()
+                  ->getResult();
     }
-
-    //    public function findOneBySomeField($value): ?Video
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
-
 }

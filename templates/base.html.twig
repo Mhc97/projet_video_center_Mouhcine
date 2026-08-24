@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app.request.locale }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,67 +12,57 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {# titre principale #}
-        <h1>{{ 'accueil'|trans }}</h1>
         <!-- NAVBAR -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-<<<<<<< HEAD
                 <a class="navbar-brand" href="{{ path('app_home', {'_locale': app.request.locale}) }}">🎬 Video Center</a>
-=======
-                <a class="navbar-brand" href="{{ path('app_home') }}">🎬 {{ 'Acceuil'|trans}}</a>
                 
->>>>>>> d50f532ab68544ec6c44f4a594fd113e818452b1
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-<<<<<<< HEAD
                             <a class="nav-link" href="{{ path('app_home', {'_locale': app.request.locale}) }}">{{ 'Accueil'|trans }}</a>
-=======
-                            <a class="nav-link" href="{{ path('app_home') }}">{{ 'Acceuil'|trans}}</a>
->>>>>>> d50f532ab68544ec6c44f4a594fd113e818452b1
                         </li>
                         {% if app.user and app.user.isVerified %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_video_create', {'_locale': app.request.locale}) }}">{{ 'Ajouter une vidéo'|trans }}</a>
                             </li>
-                            {% endif %}
-                        </ul>
+                        {% endif %}
+                    </ul>
 
-                        <ul class="navbar-nav">
-                         {# ✅ SWITCHER DE LANGUE #}
-                        <li class="nav-item">
+                    <ul class="navbar-nav">
+                        {# 🌐 SWITCHER DE LANGUE #}
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-
                                 {% if app.request.locale == 'en' %}
                                     🇬🇧 English
                                 {% else %}
-                                     🇫🇷 Français
+                                    🇫🇷 Français
                                 {% endif %}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a class="dropdown-item" href="{{ path(app.current_route, app.current_route_params|merge({'_locale':'fr'})) }}">
-                                         🇫🇷 Français
+                                    <a class="dropdown-item" href="{{ path(app.current_route, app.current_route_params|merge({'_locale': 'fr'})) }}">
+                                        🇫🇷 Français
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ path(app.current_route, app.current_route_params|merge({'_locale':'en'})) }}">
+                                    <a class="dropdown-item" href="{{ path(app.current_route, app.current_route_params|merge({'_locale': 'en'})) }}">
                                         🇬🇧 English
                                     </a>
                                 </li>
                             </ul>
                         </li>
+                        
                         {# 👤 UTILISATEUR #}
                         {% if app.user %}
-<<<<<<< HEAD
-
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_profile', {'_locale': app.request.locale}) }}">
                                     <i class="bi bi-person-circle"></i> {{ app.user.firstname }}
-                                </a>  
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_logout', {'_locale': app.request.locale}) }}">{{ 'Déconnexion'|trans }}</a>
@@ -82,39 +72,11 @@
                                 <a class="nav-link" href="{{ path('app_login', {'_locale': app.request.locale}) }}">{{ 'Connexion'|trans }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_register', {'_locale': app.request.locale}) }}">{{ 'Inscription'|trans }}</a>  {# ✅ CORRIGÉ #}
-=======
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_video_create') }}">{{ 'Ajouter une video'|trans}}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_profile') }}">{{ 'Mon profil'|trans}}</a>  {# À ajouter plus tard #}
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_logout') }}">{{ 'Déconnexion'|trans}}</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_login') }}">{{ 'Connexion'|trans}}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_register') }}">{{ 'Inscription'|trans}}</a>  {# ✅ CORRIGÉ #}
->>>>>>> d50f532ab68544ec6c44f4a594fd113e818452b1
+                                <a class="nav-link" href="{{ path('app_register', {'_locale': app.request.locale}) }}">{{ 'Inscription'|trans }}</a>
                             </li>
                         {% endif %}
                     </ul>
                 </div>
-            </div>
-            <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                {{app.request.locale == 'fr' ? '🇫🇷 Français': '🇬🇧 English'}}
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{ path(app.request.attributes.get('_route'), 
-                app.request.attributes.get(_route_params)|merge({'_locale':'fr'})) }}">🇫🇷 Français</a></li>
-                <li><a class="dropdown-item" href="{{ path(app.request.attributes.get('_route'),
-                app.request.get('_route_params')|merge({'_locale':'en'})) }}">🇬🇧 English</a></li>
-            </ul>
             </div>
         </nav>
 

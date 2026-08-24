@@ -10,19 +10,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-<<<<<<< HEAD
 use knp\component\Pager\PaginatorInterface;
-use PHPUnit\Metadata\Api\Requirements;
-use Knp\Bundle\PaginatorBundle\Definition\AbstractPaginatorAware;
-=======
-use Knp\Component\Pager\PaginatorInterface;
 
->>>>>>> d50f532ab68544ec6c44f4a594fd113e818452b1
+
+
 
 class VideoController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-<<<<<<< HEAD
+
     public function index(VideoRepository $videoRepository, Request $request, PaginatorInterface $paginator): Response
     {
         $search = $request->query->get('search', '');
@@ -33,36 +29,14 @@ class VideoController extends AbstractController
         $videos = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            6
+            9
         );
 
         return $this->render('video/index.html.twig', [
             'videos' => $videos,
             'searchTerm' => $search,
-=======
-    public function index(VideoRepository $videoRepository, PaginatorInterface $paginator, Request $request): Response
-    {
-        $videos = $pageinator->paginate(
-            $videoRepository->findAll(),
-            $request->query->getInt('page', 1),
-            6
-        );
-        $search = $request->query->get('search');
-
-        if ($search){
-            $videos = $videoRepository->search($search);
-            
-        }else {
-            $videos = $videoRepository->findAll();
-        }
-        return $this->render('video/index.html.twig', [
-            // 'videos' => $videoRepository->findAll(),
-            'videos' => $videos,
-            'search' => $search,
->>>>>>> d50f532ab68544ec6c44f4a594fd113e818452b1
         ]);
     }
-
     //  MÉTHODE AJOUTER !!:
     #[Route('/video/create', name: 'app_video_create')]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
@@ -89,8 +63,8 @@ class VideoController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
-   #[Route('/video/{id}', name: 'app_video_show' Requirements: ['id' => '\d+'])]
+   // ✅ Bonne syntaxe
+    #[Route('/video/{id}', name: 'app_video_show', requirements: ['id' => '\d+'])]
     public function show(Video $video): Response
 {
     $videoLink = $video->getVideoLink();
@@ -109,7 +83,7 @@ class VideoController extends AbstractController
     }
     return $this->render('video/show.html.twig', [
         'video' => $video,
-        'cideoId' => $videoId,
+        // 'videoId' => $videoId,
     ]);
 }
 

@@ -3,41 +3,98 @@
 {% block title %}Mon profil{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<<<<<<< HEAD
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <h1 class="mb-4 text-center">Mon profil</h1>
-        <ul class="list-group mb-4">
-            <li class="list-group-item"><strong>Email :</strong> {{ user.email }}</li>
-            <li class="list-group-item"><strong>Prénom :</strong> {{ user.firstname }}</li>
-            <li class="list-group-item"><strong>Nom :</strong> {{ user.lastname }}</li>
-            <li class="list-group-item"><strong>Compte créé le :</strong> {{ user.createdAt|date('d/m/Y H:i') }}</li>
-        </ul>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="mb-4 text-center">Mon profil</h1>
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            {% if user.imageName %}
+                                <img src="{{ vich_uploader_asset(user, 'imageFile') }}" 
+                                     alt="Photo de profil" 
+                                     class="img-fluid rounded-circle mb-3" 
+                                     style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                            {% else %}
+                                <img src="{{ asset('images/default-avatar.png') }}" 
+                                     alt="Photo par défaut" 
+                                     class="img-fluid rounded-circle mb-3" 
+                                     style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <strong>Email :</strong> {{ user.email }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Prénom :</strong> {{ user.firstname }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Nom :</strong> {{ user.lastname }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Compte créé le :</strong> {{ user.createdAt|date('d/m/Y H:i') }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Statut :</strong>
+                                    {% if user.isVerified %}
+                                        <span class="badge bg-success">✅ Vérifié</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">⏳ Non vérifié</span>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                            
+                            <div class="mt-3">
+                                <a href="{{ path('app_profile_edit', {'_locale': app.request.locale}) }}" class="btn btn-primary">
+                                    Modifier mon profil
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {# 📹 MES VIDÉOS #}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>Mes vidéos ({{ videos|length }})</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for video in videos %}
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6>
+                                            <a href="{{ path('app_video_show', {'id': video.id}) }}">
+                                                {{ video.title|length > 15 ? video.title|slice(0, 15) ~ '...' : video.title }}
+                                            </a>
+                                        </h6>
+                                        {% if video.premiumVideo %}
+                                            <span class="badge bg-warning">⭐ Premium</span>
+                                        {% endif %}
+                                        <small class="text-muted d-block">
+                                            {{ video.createdAt|date('d/m/Y') }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col-12">
+                                <p class="text-muted">Vous n'avez pas encore créé de vidéo.</p>
+                                <a href="{{ path('app_video_create', {'_locale': app.request.locale}) }}" class="btn btn-primary">
+                                    Créer ma première vidéo
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-=======
-<form method="get" class="mb-4">
-    <div class="input-group">
-        <input type="text" name="search" class="form-control" placholder="Recherche..." value="{{ search }}">
-        <button class="btn btn-primary" type="submit">🔍</button>
-    </div>
-</form>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/cfitech/projet_video_center_Mouhcine/src/Controller/AccountController.php</code></li>
-        <li>Your template at <code>C:/cfitech/projet_video_center_Mouhcine/templates/account/index.html.twig</code></li>
-    </ul>
->>>>>>> d50f532ab68544ec6c44f4a594fd113e818452b1
-</div>
-<div class="navigation">
-    {{ knp_pagination_render(videos) }}
 </div>
 {% endblock %}

@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -61,6 +61,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?string $imageName = null;
+
+    #[Vich\UploadableField(mapping: 'user_images', fileNameProperty: 'imageName')]
+    private ?File $imageFile = null;
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
@@ -100,7 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->isVerified;
     }
 
-    public function setIsVerified(bool $isVerified): self
+    public function setVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
         return $this;
@@ -170,26 +176,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    #[ORM\Column(nullable: true)]
-    private ?string $imageName = null;
-
-    #[vich\UploadableField(mapping: 'user_profil', fileNameProperty: 'imageName')]
-    private ?File $imageFile = null;
-
-    // getter 
-
     public function getImageName(): ?string
     {
         return $this->imageName;
     }
 
-    // // setter
-
     public function setImageName(?string $imageName): self
     {
         $this->imageName = $imageName;
         return $this;
-    }   
+    }
 
     public function getImageFile(): ?File
     {
@@ -206,4 +202,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function eraseCredentials(): void {}
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
 }
