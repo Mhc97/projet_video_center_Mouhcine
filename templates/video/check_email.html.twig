@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Vérifiez votre email{% endblock %}
+{% block body %}
+<div class="text-center mt-5">
+    <h1>Vérifiez votre boîte mail</h1>
+    <p>Si un compte existe avec cet email, un lien de réinitialisation vient de vous être envoyé.</p>
+    <a href="{{ path('app_login') }}" class="btn btn-secondary">Retour à la connexion</a>
+</div>
+{% endblock %}

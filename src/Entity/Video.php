@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Traits\Timestampable;
+use App\Validator\NoForbiddenWords;
 
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 #[ORM\Table(name: 'videos')]
@@ -27,6 +28,11 @@ class Video
         minMessage: 'Le titre doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le titre ne peut pas dépasser {{ limit }} caractères.'
     )]
+    // dans Video.php, sur $title :
+    #[Assert\NotEqualTo(
+    value: false,
+    message: 'Le mot "shit" est interdit dans le titre.'
+    )]
     private ?string $title = null;
 
     #[ORM\Column(length: 500)]
@@ -39,6 +45,7 @@ class Video
         min: 20,
         minMessage: 'La description doit contenir au moins {{ limit }} caractères.'
     )]
+    #[NoForbiddenWords(words: ['callypige'], message: 'Ce mot n\'est pas autorisé dans la description.')]
     private ?string $description = null;
 
     #[ORM\Column]
