@@ -29,10 +29,7 @@ class Video
         maxMessage: 'Le titre ne peut pas dépasser {{ limit }} caractères.'
     )]
     // dans Video.php, sur $title :
-    #[Assert\NotEqualTo(
-    value: false,
-    message: 'Le mot "shit" est interdit dans le titre.'
-    )]
+    #[NoForbiddenWords(words: ['shit'], message: 'Ce mot n\'est pas autorisé dans le titre.')]
     private ?string $title = null;
 
     #[ORM\Column(length: 500)]

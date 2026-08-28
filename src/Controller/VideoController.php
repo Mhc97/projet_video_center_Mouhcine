@@ -95,10 +95,10 @@ public function edit(Request $request, Video $video, EntityManagerInterface $em)
         return $this->redirectToRoute('app_login');
     }
 
-    // if (!$this->getUser()->isVerified()){
-    //     $this->addFlash('danger', 'Vous devez confirmer votre email pour modifier une vidéo.');
-    //     return $this->redirectToRoute('app_home');
-    // }
+    if (!$this->getUser()->isVerified()){
+        $this->addFlash('danger', 'Vous devez confirmer votre email pour modifier une vidéo.');
+        return $this->redirectToRoute('app_home');
+    }
 
 
     // vérifier si l'utilsateur est bien le propriétaire de la vidéo
