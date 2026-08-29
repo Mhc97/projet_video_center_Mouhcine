@@ -45,12 +45,14 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a class="dropdown-item" href="{{ path(app.current_route, app.current_route_params|merge({'_locale': 'fr'})) }}">
+                                    {# <a class="dropdown-item" href="{{ path(app.current_route, app.current_route_params|merge({'_locale': 'fr'})) }}"> #}
+                                    <a class="dropdown-item" href="{{ path(app.current_route, app.current_route_parameters|merge({'_locale': 'fr'})) }}">
                                         🇫🇷 Français
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ path(app.current_route, app.current_route_params|merge({'_locale': 'en'})) }}">
+                                    <a class="dropdown-item" href="{{ path(app.current_route, app.current_route_parameters|merge({'_locale': 'en'})) }}">
+                                    {# <a class="dropdown-item" href="{{ path(app.current_route, app.current_route_params|merge({'_locale': 'en'})) }}"> #}
                                         🇬🇧 English
                                     </a>
                                 </li>

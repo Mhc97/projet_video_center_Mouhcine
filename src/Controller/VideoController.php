@@ -10,9 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use knp\component\Pager\PaginatorInterface;
-
-
+use Knp\Component\Pager\PaginatorInterface;
 
 
 class VideoController extends AbstractController
@@ -83,7 +81,7 @@ class VideoController extends AbstractController
     }
     return $this->render('video/show.html.twig', [
         'video' => $video,
-        // 'videoId' => $videoId,
+        'videoId' => $videoId,
     ]);
 }
 
