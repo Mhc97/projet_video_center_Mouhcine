@@ -11,6 +11,7 @@ use App\Validator\NoForbiddenWords;
 
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 #[ORM\Table(name: 'videos')]
+#[ORM\HasLifecycleCallbacks]
 class Video
 {
     use Timestampable;
@@ -112,5 +113,11 @@ class Video
     {
         $this->user = $user;
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+    $this->createdAt = new \DateTimeImmutable();
     }
 }
